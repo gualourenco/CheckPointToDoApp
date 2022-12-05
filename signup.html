@@ -10,9 +10,7 @@
   <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
   <link rel="stylesheet" href="styles/acesso.css">
 
-  <!-- ---------------------- lógica aplicada no registro -------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="/scripts/signup.js"></script>
+
 
 </head>
 
@@ -29,26 +27,31 @@
 
       <label>
         Nome:
-        <input type="text">
+        <input type="text" id="name">
+        <small id="smallRequired"></small>
       </label>
       <label>
         Sobrenome:
-        <input type="text">
+        <input type="text" id="lastName">
+        <small id="smallRequired"></small>
       </label>
       <label>
         Email:
-        <input type="email">
+        <input type="email" id="email">
+        <small id="smallRequired"></small>
       </label>
       <label>
         Senha:
-        <input type="password">
+        <input type="password" id="password">
+        <small id="smallRequired"></small>
       </label>
       <label>
         Repetir senha:
-        <input type="password">
+        <input type="password" id="repeatPass">
+        <small id="smallRequired"></small>
       </label>
 
-      <button>Criar conta</button>
+      <button type="submit" id="submitButton" disabled>Criar conta</button>
 
     </form>
     <div class="ingressar">
@@ -56,6 +59,9 @@
     </div>
   </div>
 
+    <!-- ---------------------- lógica aplicada no registro -------------------- -->
+  <!-- <script src="/scripts/utils.js"></script> -->
+  <script src="/scripts/signup.js"></script>
 </body>
 
 </html>
