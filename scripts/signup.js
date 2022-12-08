@@ -15,43 +15,106 @@ const emailRegex =
 const passRegex =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
 
+// Control Variable
 
+let nameValidation = false;
+let lNameValidation = false;
+let emailValidation = false;
+let passValidation = false;
+let rPassValidation = false;
+
+// Disable Submit Button
 subB.setAttribute("disabled", true);
 subB.style.backgroundColor = "var(--app-grey)";
-// --------- Validation Events ---------------
+
+// ----------Validation Submit ---------------
 
 
-// Name Validation
+subB.addEventListener('click', function (e){
+  
+  if (nameValidation && lNameValidation && emailValidation && passValidation && rPassValidation){
+    e.preventDefault();
+    console.log('acerto mizeravi');
+    
+    let signupJs = {
+      firstName: name.value,
+      lastName : lName.value,
+      email: email.value,
+      password: pass.value
+    }
 
+    let signupJson = JSON.stringify(signupJs);
+    signupApi(signupJson);
+  }
+  
+});
+
+function signupApi(jsonReceived){
+  let configRequest = {
+    method: 'POST',
+    body:jsonReceived,
+    headers: {
+      "Content-Type": "application/json"
+      
+    }
+  }
+  fetch("http://todo-api.ctd.academy:3000/v1/users", configRequest)
+  .then((response) => {
+    return response.json();
+  })
+  .then((response) => {
+    sucessSignup(response);
+  })
+  .catch((error) => {
+    errorSignup(error);
+  });
+}
+
+function sucessSignup(answer){
+  console.log(answer.jwt);
+}
+
+function errorSignup(answer){
+  console.log(answer.jwt);
+}
+
+//        Validation Events
+
+// --------- Name Events ---------------
 //on name input
 name.addEventListener('focus', function(){
-    name.style.backgroundColor = "var(--secondary)";
+  name.style.backgroundColor = "var(--secondary)";
 });
 
 //out name input
 name.addEventListener('blur', function(){
-    name.style.backgroundColor = "var(--app-grey)";
+  name.style.backgroundColor = "var(--app-grey)";
 });
 
 name.addEventListener('keyup', function(){
 
-    name.value = name.value.replace(/[0-9]*/g, "");
+  name.value = name.value.replace(/[0-9]*/g, "");
     
 
-    name.style.backgroundColor = "var(--app-grey)";
+  name.style.backgroundColor = "var(--app-grey)";
 
-    if (name.value.length >= 2 ){
-        name.style.backgroundColor = "var(--primary)";
-        sReq[0].innerText = "";
-        subB.removeAttribute('disabled');
-        subB.style.backgroundColor = "var(--primary)";
+  if (name.value.length >= 3 ){
+
+    name.style.backgroundColor = "var(--primary)";
+    sReq[0].innerText = "";
+    nameValidation = true
+
+    if(nameValidation){
+      subB.removeAttribute('disabled');
+      subB.style.backgroundColor = "var(--primary)";
     }
-    else {
-        name.style.backgroundColor = "#FFCCCB";
-        sReq[0].innerText = 'Min. 2 letras';
-        subB.setAttribute('disabled', true);
-        subB.style.backgroundColor = "var(--app-grey)";
-    }
+  }else {
+    name.style.backgroundColor = "#FFCCCB";
+    sReq[0].innerText = 'Min. 3 letras';
+    subB.setAttribute('disabled', true);
+    subB.style.backgroundColor = "var(--app-grey)";
+  }
+
 });
 
 //out name input
@@ -60,7 +123,7 @@ name.addEventListener('blur', function(){
     sReq[0].innerText = "";
 });
 
-//Last Name Validation
+// ---------Last  Name Events ---------------
 
 //in last name input
 lName.addEventListener('focus', function(){
@@ -75,8 +138,12 @@ lName.addEventListener('keyup', function(){
     if (lName.value.length >= 3) {
       lName.style.backgroundColor = "var(--primary)";
       sReq[1].innerText = "";
-      subB.removeAttribute("disabled");
-      subB.style.backgroundColor = "var(--primary)";
+      
+      lNameValidation = true;
+      if (lNameValidation) {
+        subB.removeAttribute("disabled");
+        subB.style.backgroundColor = "var(--primary)";
+      }
     } else {
       lName.style.backgroundColor = "#FFCCCB";
       sReq[1].innerText = "Min. 3 letras";
@@ -91,7 +158,7 @@ lName.addEventListener('blur', function(){
     sReq[1].innerText = "";
 });
 
-// Email Validation
+// --------- Email Events ---------------
 
 //in email input
 email.addEventListener('focus', function(){
@@ -105,8 +172,12 @@ email.addEventListener('keyup', function(){
     if (emailRegex.test(email.value)) {
        email.style.backgroundColor = "var(--primary)";
        sReq[2].innerText = "";
-       subB.removeAttribute("disabled");
-       subB.style.backgroundColor = "var(--primary)";
+
+      emailValidation = true;
+      if (emailValidation) {
+        subB.removeAttribute("disabled");
+        subB.style.backgroundColor = "var(--primary)";
+      }
     } else {
        email.style.backgroundColor = "#FFCCCB";
        sReq[2].innerText = "Insira um email válido";
@@ -120,13 +191,13 @@ email.addEventListener('blur', function(){
     email.style.backgroundColor = "var(--app-grey)";
 });
 
-//Password Validation
+// --------- Password Events ---------------
 
 //in password input
 
 pass.addEventListener("focus", function () {
   pass.style.backgroundColor = "var(--secondary)";
-  sReq[2].innerText = "";
+  sReq[3].innerText = "";
 });
 
 pass.addEventListener("keyup", function () {
@@ -135,8 +206,12 @@ pass.addEventListener("keyup", function () {
   if (passRegex.test(pass.value)) {
     pass.style.backgroundColor = "var(--primary)";
     sReq[3].innerText = "";
-    subB.removeAttribute("disabled");
-    subB.style.backgroundColor = "var(--primary)";
+
+    passValidation = true;
+    if (passValidation) {
+      subB.removeAttribute("disabled");
+      subB.style.backgroundColor = "var(--primary)";
+    }
   } else {
     pass.style.backgroundColor = "#FFCCCB";
     sReq[3].innerText =
@@ -152,6 +227,7 @@ pass.addEventListener("blur", function () {
   sReq[3].innerText = "";
 });
 
+// --------- Repeat Password Events ---------------
 //in repeat password input
 
 rPass.addEventListener("focus", function () {
@@ -164,8 +240,12 @@ rPass.addEventListener("keyup", function () {
   if (pass.value == rPass.value) {
     rPass.style.backgroundColor = "var(--primary)";
     sReq[4].innerText = "";
-    subB.removeAttribute("disabled");
-    subB.style.backgroundColor = "var(--primary)";
+
+    rPassValidation = true;
+    if (rPassValidation) {
+      subB.removeAttribute("disabled");
+      subB.style.backgroundColor = "var(--primary)";
+    }
   } else {
     rPass.style.backgroundColor = "#FFCCCB";
     sReq[4].innerText =
@@ -181,3 +261,5 @@ rPass.addEventListener("blur", function () {
   sReq[4].innerText = "";
 });
 
+
+//            End Validation Events

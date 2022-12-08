@@ -10,10 +10,7 @@
   <!-- ---------------- estilos compartilhados entre login e signup ---------------- -->
   <link rel="stylesheet" href="styles/acesso.css">
 
-  <!-- ---------------------- lógica aplicada no login ----------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="/scripts/index.js"></script>
-
+  
 </head>
 
 <body>
@@ -29,14 +26,16 @@
       <h1>Acessar</h1>
       <label>
         Email:
-        <input id="inputEmail inputReq" type="text" oninput="emailValidate()">
+        <input id="emailIndex" type="email" >
+        <small id="smallRequired"></small>
       </label>
       <label>
         Senha:
-        <input id="inputPassword inputReq" type="password">
+        <input id="passIndex" type="password">
+        <small id="smallRequired"></small>
       </label>
 
-      <button type="submit">Acessar</button>
+      <button type="submit" id="signIn" disabled>Acessar</button>
 
     </form>
     <div class="ingressar">
@@ -44,9 +43,9 @@
     </div>
   </div>
 
-   <!-- ---------------------- lógica aplicada no login ----------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="./scripts/index.js"></script>
+  <!-- ---------------------- lógica aplicada no login ----------------------- -->
+  <!-- <script src="/scripts/utils.js"></script> -->
+  <script src="/scripts/index.js"></script>
 </body>
 
 </html>
