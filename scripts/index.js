@@ -5,11 +5,7 @@ let subB = document.querySelector('#signIn');
 let sReq = document.querySelectorAll("#smallRequired");
 
 // Regex
-const emailRegex =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const passRegex =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
 
   //Control Variable
 
@@ -34,36 +30,70 @@ subB.addEventListener("click", function (e) {
     };
 
     let loginJson = JSON.stringify(loginJs);
-    loginApi(loginJson);
+    loginAsync(loginJson);
   }
 });
 
-function loginApi(jsonReceived) {
+// function loginApi(jsonReceived) {
+//   let configRequest = {
+//     method: "POST",
+//     body: jsonReceived,
+//     headers: {
+//       "Content-Type": "application/json",
+//     }
+//   };
+//   fetch(`${baseUrl()}/users/login`, configRequest)
+//     .then((response) => {
+//       if(response.status == 201){
+//         return response.json();
+//       }else {
+//         throw response;
+//       }
+//     })
+//     .then((response) => {
+//       sucessLogin(response);
+//     })
+//     .catch((error) => {
+//       errorLogin(error);
+//     });
+// }
+
+async function loginAsync (jsonReceived){
   let configRequest = {
     method: "POST",
     body: jsonReceived,
     headers: {
       "Content-Type": "application/json",
-    },
-  };
-  fetch("http://todo-api.ctd.academy:3000/v1/users/login", configRequest)
-    .then((response) => {
-      return response.json();
-    })
-    .then((response) => {
-      sucessLogin(response);
-    })
-    .catch((error) => {
-      errorLogin(error);
-    });
+    }
+  }
+  try{
+
+    let login = await fetch(`${baseUrl()}/users/login`, configRequest);
+    if(login.status == 201){
+      let loginResponse = await login.json();
+      sucessLogin(loginResponse);
+    } else {
+      throw login;
+    }
+  }catch (error){
+    errorLogin(error);
+  }
+
 }
 
 function sucessLogin(answer) {
   console.log(answer.jwt);
+
+  sessionStorage.setItem("jwt", answer.jwt);
+
+  window.location.href = "./tarefas.html";
 }
 
 function errorLogin(answer) {
   console.log(answer.jwt);
+  if (answer.status == 400 || answer.status == 404) {
+    alert('Email e/ou senha inválidos');
+  }
 }
 
   // --------- Email Events ---------------
@@ -76,7 +106,7 @@ emailIndex.addEventListener("focus", function () {
 emailIndex.addEventListener("keyup", function () {
   emailIndex.style.backgroundColor = "var(--app-grey)";
 
-  if (emailRegex.test(emailIndex.value)) {
+  if (emailRegex().test(emailIndex.value)) {
     emailIndex.style.backgroundColor = "var(--primary)";
     sReq[0].innerText = "";
 
@@ -105,7 +135,7 @@ passIndex.addEventListener("focus", function () {
 passIndex.addEventListener("keyup", function () {
   passIndex.style.backgroundColor = "var(--app-grey)";
 
-  if (passRegex.test(passIndex.value)) {
+  if (passRegex().test(passIndex.value)) {
     passIndex.style.backgroundColor = "var(--primary)";
     sReq[1].innerText = "";
 

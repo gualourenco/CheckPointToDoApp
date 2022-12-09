@@ -8,13 +8,6 @@ let pass = document.querySelector('#password');
 let rPass = document.querySelector('#repeatPass');
 let sReq = document.querySelectorAll("#smallRequired");
 
-// Regex
-const emailRegex =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-const passRegex =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
-
 // Control Variable
 
 let nameValidation = false;
@@ -58,7 +51,7 @@ function signupApi(jsonReceived){
       
     }
   }
-  fetch("http://todo-api.ctd.academy:3000/v1/users", configRequest)
+  fetch(`${baseUrl()}/users`, configRequest)
   .then((response) => {
     return response.json();
   })
@@ -169,7 +162,7 @@ email.addEventListener('keyup', function(){
      
     email.style.backgroundColor = "var(--app-grey)";
 
-    if (emailRegex.test(email.value)) {
+    if (emailRegex().test(email.value)) {
        email.style.backgroundColor = "var(--primary)";
        sReq[2].innerText = "";
 
@@ -203,7 +196,7 @@ pass.addEventListener("focus", function () {
 pass.addEventListener("keyup", function () {
   pass.style.backgroundColor = "var(--app-grey)";
 
-  if (passRegex.test(pass.value)) {
+  if (passRegex().test(pass.value)) {
     pass.style.backgroundColor = "var(--primary)";
     sReq[3].innerText = "";
 
