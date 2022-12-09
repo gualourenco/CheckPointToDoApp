@@ -1,4 +1,5 @@
 let pendingTasksUl = document.querySelector(".tarefas-pendentes");
+let jwtPending;
 
 function pendingTaskRender(task) {
   console.log(task);
@@ -19,6 +20,32 @@ function pendingTaskRender(task) {
 function manipulateTaskById(id){
     console.log(id);
 
+     let configRequest = {
+       headers: {
+         'authorization': jwtPending
+       },
+     };
+
+    fetch(`${baseUrl()}/tasks/${id}`, configRequest)
+    .then(
+      answer =>{
+        
+        return answer.json()
+      }
+        
+    )
+    .then(
+          answer => {
+            answer.completed = true;
+          }
+    )
+    .catch(
+      error => {
+        console.log(error)
+      }
+
+    )
+   
     location.reload();
 };
 

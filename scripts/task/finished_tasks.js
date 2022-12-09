@@ -18,6 +18,7 @@ function finishedTaskRender(task) {
 
 function manipulateTaskById(id) {
   console.log(id);
+  
 
-  location.reload();
+  //location.reload();
 }

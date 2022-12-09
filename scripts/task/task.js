@@ -77,7 +77,7 @@ let taskListManager = (tasks) => {
     
 
     tasks.forEach(task => {
-        console.log(task)
+        
         if(task.completed == false){
             pendingTaskRender(task);
         } else {
