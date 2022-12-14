@@ -1,5 +1,4 @@
 let pendingTasksUl = document.querySelector(".tarefas-pendentes");
-let jwtPending;
 
 function pendingTaskRender(task) {
   console.log(task);
@@ -8,7 +7,7 @@ function pendingTaskRender(task) {
   li.classList.add("tarefa");
 
   li.innerHTML = `
-        <div class="not-done" onclick="manipulateTaskById(${task.id})"></div>
+        <div class="not-done" onclick="manipulatePendingTaskById(${task.id})"></div>
         <div class="descricao">
             <p class="nome">${task.description}</p>
             <p class="timestamp">Criada em: ${task.createdAt}</p>
@@ -17,35 +16,8 @@ function pendingTaskRender(task) {
   pendingTasksUl.appendChild(li);
 }
 
-function manipulateTaskById(id){
-    console.log(id);
-
-     let configRequest = {
-       headers: {
-         'authorization': jwtPending
-       },
-     };
-
-    fetch(`${baseUrl()}/tasks/${id}`, configRequest)
-    .then(
-      answer =>{
-        
-        return answer.json()
-      }
-        
-    )
-    .then(
-          answer => {
-            answer.completed = true;
-          }
-    )
-    .catch(
-      error => {
-        console.log(error)
-      }
-
-    )
-   
-    location.reload();
-};
-
+function manipulatePendingTaskById(id) {
+  //console.log(id);
+  console.log(`${baseUrl()}/tasks/${id}`);
+  // location.reload();
+}

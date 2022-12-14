@@ -7,7 +7,7 @@ function finishedTaskRender(task) {
   li.classList.add("tarefa");
 
   li.innerHTML = `
-        <div class="not-done" onclick="manipulateTaskById(${task.id})"></div>
+        <div class="not-done" onclick="manipulateFinishedTaskById(${task.id})"></div>
         <div class="descricao">
             <p class="nome">${task.description}</p>
             <p class="timestamp">Criada em: ${task.createdAt}</p>
@@ -16,9 +16,9 @@ function finishedTaskRender(task) {
   finishedTasksUl.appendChild(li);
 }
 
-function manipulateTaskById(id) {
+function manipulateFinishedTaskById(id) {
   console.log(id);
   
 
-  //location.reload();
+  // location.reload();
 }

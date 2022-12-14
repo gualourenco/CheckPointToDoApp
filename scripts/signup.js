@@ -65,6 +65,8 @@ function signupApi(jsonReceived){
 
 function sucessSignup(answer){
   console.log(answer.jwt);
+
+  window.location.href = "./index.html";
 }
 
 function errorSignup(answer){
