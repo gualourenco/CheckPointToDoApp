@@ -1,4 +1,7 @@
 let jwt;
+let newTask = document.querySelector("#novaTarefa");
+let subTask = document.querySelector("#submitTask");
+let logOut = document.querySelector('#closeApp')
 
 onload = function(){
 
@@ -48,10 +51,16 @@ function searchUserData(){
     }
 }
 
+logOut.addEventListener('click', function(){
+    sessionStorage.removeItem('jwt')
+    window.location.href = "index.html"
+})
+
 async function searchTasks() {
 
     let configRequest = {
         headers: {
+            "Contet-type": "application/json",
             'authorization': jwt
         }
     }
@@ -66,8 +75,8 @@ async function searchTasks() {
             throw Error('Não foi possível buscar a lista de tarefas.');
         }
 
-    } catch {
-
+    } catch (error){
+        alert(error);
     }
 }
 
@@ -86,3 +95,38 @@ let taskListManager = (tasks) => {
     });
 }
 
+async function postNewTask(){
+
+    jwt = sessionStorage.getItem("jwt");
+    
+    let taskObj = {
+        description: newTask.value,
+        completed: false
+    }
+
+    let taskJson = JSON.stringify(taskObj);
+
+    let newTaskRequest = {
+        method: "POST",
+        body: taskJson,
+        headers: {
+            "Content-type": "application/json",
+            "authorization": jwt
+        }
+    }
+
+    try {
+        let taskRequest = fetch(`${baseUrl()}/tasks`, newTaskRequest)
+
+        if (taskRequest.status == 200 || taskRequest == 204){
+            taskRequest.json()
+            console.log(response)
+        }
+        else{
+            throw taskRequest
+        }
+    }
+    catch{
+        alert("Parabéns! Você tem uma nova tarefa")
+    }
+}

@@ -34,29 +34,6 @@ subB.addEventListener("click", function (e) {
   }
 });
 
-// function loginApi(jsonReceived) {
-//   let configRequest = {
-//     method: "POST",
-//     body: jsonReceived,
-//     headers: {
-//       "Content-Type": "application/json",
-//     }
-//   };
-//   fetch(`${baseUrl()}/users/login`, configRequest)
-//     .then((response) => {
-//       if(response.status == 201){
-//         return response.json();
-//       }else {
-//         throw response;
-//       }
-//     })
-//     .then((response) => {
-//       sucessLogin(response);
-//     })
-//     .catch((error) => {
-//       errorLogin(error);
-//     });
-// }
 
 async function loginAsync (jsonReceived){
   let configRequest = {

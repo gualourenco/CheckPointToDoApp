@@ -16,9 +16,32 @@ function finishedTaskRender(task) {
   finishedTasksUl.appendChild(li);
 }
 
-function manipulateFinishedTaskById(id) {
-  console.log(id);
+async function manipulateFinishedTaskById(id) {
+  //console.log(id);
+  //console.log(`${baseUrl()}/tasks/${id}`);
   
 
-  // location.reload();
+  
+
+  let configRequest = {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+      authorization: jwt,
+    },
+  };
+  try {
+    let request = fetch(`${baseUrl()}/tasks/${id}`, configRequest);
+
+    if (request.status == 200 || request.status == 204) {
+      let response = await request.json();
+      console.log(response);
+    } else {
+      throw Error("Falha ao atualizar a tarefa");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  location.reload();
 }

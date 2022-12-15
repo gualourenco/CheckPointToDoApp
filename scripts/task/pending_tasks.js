@@ -1,5 +1,6 @@
 let pendingTasksUl = document.querySelector(".tarefas-pendentes");
 
+
 function pendingTaskRender(task) {
   console.log(task);
 
@@ -16,8 +17,42 @@ function pendingTaskRender(task) {
   pendingTasksUl.appendChild(li);
 }
 
-function manipulatePendingTaskById(id) {
+async function manipulatePendingTaskById(id) {
+
   //console.log(id);
-  console.log(`${baseUrl()}/tasks/${id}`);
-  // location.reload();
+  //console.log(`${baseUrl()}/tasks/${id}`);
+  let turningTask = {
+    "completed": true
+  }
+
+  turningJson = JSON.stringify(turningTask)
+
+  let configRequest = {
+    method: 'PUT',
+    body: turningJson,
+    headers: {
+      "Content-type": "application/json",
+      'authorization' : jwt
+    }
+
+  }
+  try {
+    let request = fetch(`${baseUrl()}/tasks/${id}`, configRequest)
+
+    if (request.status == 200 || request.status == 204){
+      let response = await request.json();
+      console.log(response);
+      
+    }
+    else {
+      throw Error("Falha ao atualizar a tarefa")
+    }
+  }
+  catch(error){
+    console.log(error);
+  }
+  
+
+    
+  location.reload();
 }
